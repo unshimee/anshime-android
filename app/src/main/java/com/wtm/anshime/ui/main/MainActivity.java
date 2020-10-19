@@ -1,8 +1,10 @@
-package com.wtm.anshime;
+package com.wtm.anshime.ui.main;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.wtm.anshime.R;
 
 public class MainActivity extends AppCompatActivity {
 
