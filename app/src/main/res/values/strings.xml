@@ -1,3 +1,6 @@
 <resources>
-    <string name="app_name">Anshime</string>
+    <string name="app_name">안심이</string>
+    <string name="kakao_login">카카오 로그인</string>
+    <string name="if_not_female_msg">여성이 아니신 경우 앱 사용을 위해 별도의 절차가 필요합니다.</string>
+    <string name="check_network_connection">네트워크 상태를 확인해주세요.</string>
 </resources>
