@@ -1,12 +1,11 @@
 package com.wtm.anshime.ui.main;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 
 import com.wtm.anshime.R;
+import com.wtm.anshime.ui.BaseActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
