@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "468857561471",
+    "firebase_url": "https://anshime-ec712.firebaseio.com",
+    "project_id": "anshime-ec712",
+    "storage_bucket": "anshime-ec712.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:468857561471:android:ea7412aef6c232a3043a4a",
+        "android_client_info": {
+          "package_name": "com.wtm.anshime"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "468857561471-9hu4mjn2ad89ngosvd87jp0893r86uqa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wtm.anshime",
+            "certificate_hash": "16035de2b21ec4ca45a2fac989dfba57ca0ab68e"
+          }
+        },
+        {
+          "client_id": "468857561471-37pnd3lij9t4n3bv95b5bs7esrkm63vo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBafPc4qxI8PE0-OYM78fxVkershQnKq6k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "468857561471-37pnd3lij9t4n3bv95b5bs7esrkm63vo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
