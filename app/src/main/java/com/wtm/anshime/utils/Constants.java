@@ -8,4 +8,5 @@ public class Constants {
     public final static String LOCATIONS_API_BASE_URL = "http://apis.vworld.kr/";
     public final static String LOCATIONS_API_KEY = "1B057629-3DF4-3581-ADB3-1E03BE62DD85";
     public final static String LOCATIONS_DOMAIN = "market://details?id=com.wtm.anshime";
+    public final static String JSON = "json";
 }

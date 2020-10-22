@@ -11,19 +11,17 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.gun0912.tedpermission.PermissionListener;
 import com.wtm.anshime.R;
 import com.wtm.anshime.api.RetrofitBuilder;
 import com.wtm.anshime.model.Address;
 import com.wtm.anshime.ui.BaseActivity;
 import com.wtm.anshime.utils.LocationHelper;
 
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.wtm.anshime.utils.Constants.JSON;
 import static com.wtm.anshime.utils.Constants.LOCATIONS_API_KEY;
 import static com.wtm.anshime.utils.Constants.LOCATIONS_DOMAIN;
 
@@ -52,35 +50,31 @@ public class MainActivity extends BaseActivity {
         LocationHelper locationHelper = LocationHelper.getInstance();
         locationHelper.setContext(this);
 
-        locationHelper.askLocationPermission(new PermissionListener() {
-            @Override
-            public void onPermissionGranted() {
-                Toast.makeText(MainActivity.this, "위치권한 허가됨!", Toast.LENGTH_SHORT).show();
-                location = locationHelper.getLocation();
-                setLocationOnMainBoard();
-            }
-
-            @Override
-            public void onPermissionDenied(List<String> deniedPermissions) {
-                Toast.makeText(MainActivity.this, "위치권한 거부됨!", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        location = locationHelper.getLocation();
-
+        /*
+        * 사용자의 위치 권한이 수락되었다는 것을 전제로 하지만
+        * 혹시 몰라 한 번 더 체크합니다.
+        * */
         if(locationHelper.isLocationPermissionGranted()) {
+            location = locationHelper.getLocation();
             Log.d(TAG, "onCreate: Location permission is granted");
             setLocationOnMainBoard();
         }
 
     }
 
-    // TODO: 10/21/2020 만약 repository 패턴을 이용한다면 네트워킹 코드는 repository 클래스로 이동해야 합니다 .
+    // 참고) 만약 repository 패턴을 이용한다면 네트워킹 코드는 repository 클래스로 이동해야 합니다 .
+    /* GPS 값을 도로명주소로 변환하는 API를 호출하고
+    *  만약 올바른 GPS 값을 받아서 도로명주소로 제대로 반환이 된 경우
+    *  무슨 시에 있는지 표시해줍니다.
+    *  만약 GPS 값이 잘못되어서 서버에서 도로명주소를 읽어오지 못한 경우
+    *  ???시 로 디스플레이 됩니다.
+    * */
     private void setLocationOnMainBoard(){
+
         Call<Address> call = RetrofitBuilder.getInstance().locationApiService.getAddressFromGps(
                 Double.toString(location.getLongitude()),
                 Double.toString(location.getLatitude()),
-                "json",
+                JSON,
                 LOCATIONS_API_KEY,
                 LOCATIONS_DOMAIN
         );
@@ -93,6 +87,11 @@ public class MainActivity extends BaseActivity {
                     String si = address.split(" ")[0];
                     Log.d(TAG, "onResponse: " + si);
                     mainBoardSi.setText(si);
+                }else{
+                    //emulator 에서 올바른 gps 값을 읽어오지 못할 경우
+                    //일단은 ???로 디스플레이 하도록 합니다.
+                    mainBoardSi.setText(R.string.si_placeholder);
+                    Toast.makeText(MainActivity.this, R.string.wrong_gps_value_msg, Toast.LENGTH_SHORT).show();
                 }
             }
 

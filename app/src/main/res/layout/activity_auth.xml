@@ -68,6 +68,7 @@
         android:drawableLeft="@drawable/ic_kakao_talk_logo"
         android:layout_marginStart="@dimen/default_start_margin"
         android:layout_marginEnd="@dimen/default_end_margin"
+        style="@style/Button"
         app:layout_constraintTop_toBottomOf="@id/gl_bottom_view"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

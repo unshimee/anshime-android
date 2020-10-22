@@ -13,6 +13,14 @@ import androidx.core.app.ActivityCompat;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
+
+/*
+* 위치권한을 확인할 수 있는 헬퍼 클래스입니다.
+* 본 클래스를 통해서
+* 1. 위치 권한이 부여되었는지 확인하고
+* 2. Location Manager 를 가져와서
+* 3. Location 객체의 값을 읽을 수 있습니다.
+* */
 public class LocationHelper {
 
     private static LocationHelper instance;
