@@ -1,14 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.WriteInfoFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.main.routeinfo.WriteInfoFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/write_info_appbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent">
 
-</FrameLayout>
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/write_info_toolbar"
+            app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/Title3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/write_route_detail_title"
+                android:textColor="@android:color/white" />
+
+        </com.google.android.material.appbar.MaterialToolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/route_info_card"
+        app:layout_constraintTop_toBottomOf="@id/write_info_appbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/default_end_margin"
+        app:cardCornerRadius="@dimen/card_corner_radius"
+        app:cardElevation="8dp"
+        android:layout_height="0dp">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <TextView
+                android:id="@+id/textView"
+                style="@style/Title2"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="@string/route_info"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/start_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:height="@dimen/default_input_height"
+                android:background="@drawable/round_corner_rect"
+                android:gravity="center_vertical"
+                android:text="@string/start_time"
+                android:textColor="@color/lightGrey"
+                android:paddingStart="8dp"
+                android:drawablePadding="8dp"
+                android:layout_marginTop="@dimen/view_default_margin"
+                android:layout_marginStart="@dimen/view_default_margin"
+                android:layout_marginEnd="@dimen/view_default_margin"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView"
+                app:drawableStartCompat="@drawable/ic_baseline_access_time_24" />
+
+
+            <TextView
+                android:id="@+id/end_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/view_default_margin"
+                android:layout_marginTop="@dimen/view_default_margin"
+                android:layout_marginEnd="@dimen/view_default_margin"
+                android:height="@dimen/default_input_height"
+                android:background="@drawable/round_corner_rect"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"
+                android:paddingStart="8dp"
+                android:text="@string/end_time"
+                android:textColor="@color/lightGrey"
+                app:drawableStartCompat="@drawable/ic_baseline_access_time_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/start_time" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/choose_transport_method"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                app:layout_constraintTop_toBottomOf="@id/end_time"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="@dimen/view_default_margin"
+                android:layout_marginStart="@dimen/view_default_margin"
+                android:layout_marginEnd="@dimen/view_default_margin"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:boxCornerRadiusTopEnd="6dp"
+                app:boxCornerRadiusTopStart="6dp"
+                app:startIconDrawable="@drawable/ic_baseline_directions_walk_24"
+                app:startIconContentDescription="@string/start_icon_desc_transport_method"
+                android:hint="@string/choose_transport_method_hint">
+
+                <AutoCompleteTextView
+                    android:id="@+id/filled_exposed_dropdown"
+                    android:backgroundTint="@color/greyWhite"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/car_number_input_layout"
+                android:layout_marginTop="@dimen/view_default_margin"
+                android:layout_marginStart="@dimen/view_default_margin"
+                android:layout_marginEnd="@dimen/view_default_margin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/choose_transport_method"
+                app:boxCornerRadiusTopEnd="6dp"
+                app:boxCornerRadiusTopStart="6dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:startIconDrawable="@drawable/ic_baseline_directions_car_24"
+                app:startIconContentDescription="@string/start_icon_desc_car_number"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="@dimen/view_default_margin"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:hint="@string/enter_car_number_hint">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+
+    <Button
+        android:id="@+id/write_info_next_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/route_info_card"
+        android:layout_marginTop="@dimen/default_end_margin"
+        android:layout_marginStart="@dimen/default_start_margin"
+        android:layout_marginEnd="@dimen/default_end_margin"
+        style="@style/Button"
+        android:text="작성 정보 확인하기"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

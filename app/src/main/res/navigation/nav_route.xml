@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_route"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.wtm.anshime.ui.main.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_chooseRouteFragment"
+            app:destination="@id/chooseRouteFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/chooseRouteFragment"
+        android:name="com.wtm.anshime.ui.main.routeinfo.ChooseRouteFragment"
+        android:label="ChooseRouteFragment" >
+        <action
+            android:id="@+id/action_chooseRouteFragment_to_writeInfoFragment"
+            app:destination="@id/writeInfoFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/writeInfoFragment"
+        android:name="com.wtm.anshime.ui.main.routeinfo.WriteInfoFragment"
+        android:label="fragment_write_info"
+        tools:layout="@layout/fragment_write_info" >
+        <action
+            android:id="@+id/action_writeInfoFragment_to_checkInfoFragment"
+            app:destination="@id/checkInfoFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/checkInfoFragment"
+        android:name="com.wtm.anshime.ui.main.routeinfo.CheckInfoFragment"
+        android:label="fragment_check_info"
+        tools:layout="@layout/fragment_check_info" />
+</navigation>
