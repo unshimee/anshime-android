@@ -8,12 +8,16 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.gun0912.tedpermission.PermissionListener;
 import com.kakao.sdk.auth.LoginClient;
 import com.kakao.sdk.user.UserApiClient;
 import com.kakao.sdk.user.model.Account;
 import com.kakao.sdk.user.model.Gender;
 import com.wtm.anshime.R;
 import com.wtm.anshime.ui.main.MainActivity;
+import com.wtm.anshime.utils.LocationHelper;
+
+import java.util.List;
 
 import static com.wtm.anshime.utils.Constants.FEMALE;
 
@@ -54,8 +58,26 @@ public class AuthActivity extends BaseActivity{
 
     }
 
+    /*
+    * 로그인 화면에 들어가면 사용자에게 위치 권한을 묻습니다.
+    * 해커톤인만큼 최대한 단순하게 코드를 짜기 위해
+    * 위치 권한이 본 단계에서 수락되었음을 가정하고 이후 코드를 작성합니다.
+    * */
     private void askLocationPermission() {
+        LocationHelper locationHelper = LocationHelper.getInstance();
+        locationHelper.setContext(this);
 
+        locationHelper.askLocationPermission(new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                Toast.makeText(AuthActivity.this, R.string.location_permission_granted_msg, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onPermissionDenied(List<String> deniedPermissions) {
+                Toast.makeText(AuthActivity.this, R.string.location_permission_denied_msg, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void setUpKakaoTalkLogin() {
