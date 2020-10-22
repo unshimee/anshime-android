@@ -74,8 +74,20 @@ public class MainFragment extends Fragment {
             setLocationOnMainBoard();
         }
 
+        /* 귀가 정보 작성 페이지로 넘어갑니다.
+         * */
         editFab.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(R.id.action_mainFragment_to_chooseRouteFragment);
+        });
+
+        // TODO: 10/22/2020 귀가 시작 이후의 로직을 작성해 주시면 됩니다.
+        startFab.setOnClickListener(v -> {
+            Toast.makeText(requireContext(), "귀가 시작", Toast.LENGTH_SHORT).show();
+        });
+
+        // TODO: 10/22/2020 귀가 종료 이후의 로직을 작성해주시면 됩니다.
+        endFab.setOnClickListener(v -> {
+            Toast.makeText(requireContext(), "귀가 종료", Toast.LENGTH_SHORT).show();
         });
     }
 

@@ -2,6 +2,7 @@ package com.wtm.anshime.ui.main;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.wtm.anshime.R;
 import com.wtm.anshime.ui.BaseActivity;
@@ -14,16 +15,12 @@ import com.wtm.anshime.ui.BaseActivity;
  * */
 public class MainActivity extends BaseActivity {
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
     }
-
-
 
     private static final String TAG = "MainActivity";
 }
