@@ -1,6 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.routeinfo.ChooseRouteFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/choose_route_appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/choose_route_toolbar"
+            app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/Title3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/write_route_info_app_bar_title"
+                android:textColor="@android:color/white" />
+
+        </com.google.android.material.appbar.MaterialToolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <TextView
+        android:id="@+id/start_route"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/route_input_height"
+        android:layout_marginStart="@dimen/default_start_margin"
+        android:layout_marginEnd="@dimen/default_end_margin"
+        android:background="@drawable/round_corner_rect"
+        android:drawablePadding="8dp"
+        android:paddingStart="8dp"
+        android:text="@string/starting_location"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toTopOf="@+id/end_route"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/choose_route_appbar"
+        app:drawableStartCompat="@drawable/ic_baseline_location_on_24" />
+
+
+    <TextView
+        android:id="@+id/end_route"
+        android:text="@string/end_location"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/route_input_height"
+        android:gravity="center_vertical"
+        android:layout_marginStart="@dimen/default_start_margin"
+        android:layout_marginEnd="@dimen/default_end_margin"
+        android:background="@drawable/round_corner_rect"
+        android:drawablePadding="8dp"
+        android:paddingStart="8dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/start_route"
+        app:drawableStartCompat="@drawable/ic_baseline_location_on_24" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="@dimen/route_info_top_margin" />
+
+<!--    TODO View 를 MapView 로 수정한 후 작업해야 합니다. -->
+
+    <View
+        app:layout_constraintTop_toBottomOf="@id/guideline2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/choose_route_next_button"
+        android:layout_marginBottom="@dimen/default_end_margin"
+        android:background="@color/lightGrey"
+        android:layout_height="0dp"
+        android:layout_width="0dp"
+        />
+
+
+    <Button
+        android:id="@+id/choose_route_next_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="@dimen/default_end_margin"
+        android:layout_marginStart="@dimen/default_start_margin"
+        android:layout_marginEnd="@dimen/default_end_margin"
+        style="@style/Button"
+        android:text="@string/choose_route_next_btn_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
