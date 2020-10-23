@@ -33,7 +33,6 @@ import static com.wtm.anshime.utils.Constants.LOCATIONS_DOMAIN;
 
 public class MainFragment extends Fragment {
 
-
     private FloatingActionButton mainFab;
     private ExtendedFloatingActionButton editFab;
     private ExtendedFloatingActionButton startFab;
@@ -55,6 +54,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
 
         setUpFloatingActionButtons(view);
         mainBoardSi = view.findViewById(R.id.main_board_si);
@@ -120,6 +120,7 @@ public class MainFragment extends Fragment {
                     String si = address.split(" ")[0];
                     Log.d(TAG, "onResponse: " + si);
                     mainBoardSi.setText(si);
+
                 }else{
                     //emulator 에서 올바른 gps 값을 읽어오지 못할 경우
                     //일단은 ???로 디스플레이 하도록 합니다.
