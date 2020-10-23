@@ -42,14 +42,19 @@ public class AuthActivity extends BaseActivity{
             if(!isNetworkConnected()){
                 Toast.makeText(this, R.string.check_network_connection, Toast.LENGTH_LONG).show();
             }else {
-                // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
-                if (LoginClient.getInstance().isKakaoTalkLoginAvailable(getApplicationContext())) {
-                    //카카오톡이 있는 경우
-                    setUpKakaoTalkLogin();
-                } else {
-                    //카카오톡은 없지만 카카오 계정은 있는 경우
-                    setUpKakaoAccountLogin();
-                }
+
+                //카카오톡은 없지만 카카오 계정은 있는 경우
+                navigateToMainActivity();
+
+                // TODO: 10/23/2020 Fix this later
+//                // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
+//                if (LoginClient.getInstance().isKakaoTalkLoginAvailable(getApplicationContext())) {
+//                    //카카오톡이 있는 경우
+//                    setUpKakaoTalkLogin();
+//                } else {
+//                    //카카오톡은 없지만 카카오 계정은 있는 경우
+//                    setUpKakaoAccountLogin();
+//                }
             }
         });
     }
