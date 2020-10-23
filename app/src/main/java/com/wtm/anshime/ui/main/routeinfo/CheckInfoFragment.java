@@ -20,6 +20,8 @@ public class CheckInfoFragment extends Fragment {
 
     private MaterialToolbar toolbar;
 
+    public CheckInfoFragment(){}
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

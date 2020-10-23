@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,8 +43,11 @@ public class MainFragment extends Fragment {
     private TextView mainBoardSi;
     private Location location;
 
+    private Button enterChatBtn;
+
     boolean isOpen = false;
 
+    public MainFragment(){}
 
     @Nullable
     @Override
@@ -57,6 +61,8 @@ public class MainFragment extends Fragment {
 
 
         setUpFloatingActionButtons(view);
+
+        enterChatBtn = view.findViewById(R.id.btn_enter_group_chat);
         mainBoardSi = view.findViewById(R.id.main_board_si);
 
         LocationHelper locationHelper = LocationHelper.getInstance();
@@ -92,6 +98,10 @@ public class MainFragment extends Fragment {
         // TODO: 10/22/2020 귀가 종료 이후의 로직을 작성해주시면 됩니다.
         endFab.setOnClickListener(v -> {
             Toast.makeText(requireContext(), "귀가 종료", Toast.LENGTH_SHORT).show();
+        });
+
+        enterChatBtn.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.action_main_to_chat);
         });
     }
 
