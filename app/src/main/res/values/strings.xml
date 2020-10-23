@@ -12,7 +12,7 @@
     <string name="wrong_gps_value_msg">올바른 GPS값이 아닙니다.\n위치 정보를 읽어올 수 없습니다.</string>
     <string name="si_placeholder">\???시</string>
     <string name="main_board_sub_title">여성 안전 귀가 현황</string>
-    <string name="main_board_title_placeholder">서울시</string>
+    <string name="main_board_title_placeholder">서울특별시</string>
     <string name="main_board_total_count">%d명</string>
     <string name="write_route_info_app_bar_title">귀가 정보 작성하기</string>
     <string name="starting_location">출발지</string>
