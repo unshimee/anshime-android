@@ -14,8 +14,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -70,8 +68,14 @@ public class MainFragment extends Fragment {
          * */
         if(locationHelper.isLocationPermissionGranted()) {
             location = locationHelper.getLocation();
+
             Log.d(TAG, "onCreate: Location permission is granted");
-            setLocationOnMainBoard();
+
+            if(location != null){
+                setLocationOnMainBoard();
+            }else{
+                Toast.makeText(requireContext(), "location not provided", Toast.LENGTH_SHORT).show();
+            }
         }
 
         /* 귀가 정보 작성 페이지로 넘어갑니다.

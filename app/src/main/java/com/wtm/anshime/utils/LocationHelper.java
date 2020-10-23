@@ -10,6 +10,7 @@ import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
@@ -65,7 +66,16 @@ public class LocationHelper {
 
     @SuppressLint("MissingPermission")
     public Location getLocation(){
-        location = getLocationManager().getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        LocationManager locationManager = getLocationManager();
+
+        if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        }else if(locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
+            location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        }else{
+            FirebaseCrashlytics.getInstance().log("location manager : no provider !");
+            return null;
+        }
         Log.d(TAG, "getLocation: " + location);
         return location;
     }
