@@ -2,14 +2,19 @@ package com.wtm.anshime.utils;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
@@ -67,17 +72,30 @@ public class LocationHelper {
     @SuppressLint("MissingPermission")
     public Location getLocation(){
         LocationManager locationManager = getLocationManager();
+        Log.d(TAG, "location manager " + locationManager.getAllProviders());
+
+        Log.d(TAG, "getLocation: " + "\n"
+        + locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) + "\n" +
+                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER));
 
         if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
             location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            Log.d(TAG, "getLocation: from gps " + location);
         }else if(locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
             location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        }else{
+        }else if(locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER)){
+            location = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+        } else{
             FirebaseCrashlytics.getInstance().log("location manager : no provider !");
             return null;
         }
         Log.d(TAG, "getLocation: " + location);
         return location;
+    }
+
+    @SuppressLint("MissingPermission")
+    public void getCurrentLocation(){
+
     }
 
     public boolean isLocationPermissionGranted(){

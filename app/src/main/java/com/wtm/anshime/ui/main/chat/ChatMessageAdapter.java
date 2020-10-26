@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,6 +25,8 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private static final int VIEW_TYPE_OTHER = 2000;
     private List<ChatMessage> chatMessages;
     private String userName;
+    private int lastPosition = -1;
+
 
     public ChatMessageAdapter(
             List<ChatMessage> chatMessages,
@@ -47,6 +51,15 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         myChatMessageViewHolder.content.setText(msg.getContent());
         myChatMessageViewHolder.timeStamp.setText(msg.getTimeStamp());
         myChatMessageViewHolder.userName.setText(msg.getUserName());
+
+        // If the bound view wasn't previously displayed on screen, it's animated
+        if (position > lastPosition) {
+            Animation animation = AnimationUtils.loadAnimation(
+                    myChatMessageViewHolder.itemView.getContext(),
+                    android.R.anim.slide_in_left);
+            myChatMessageViewHolder.itemView.startAnimation(animation);
+            lastPosition = position;
+        }
     }
 
     private void configureOtherChatViewHolder(final OtherChatMessageViewHolder otherChatMessageViewHolder,

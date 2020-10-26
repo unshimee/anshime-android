@@ -66,22 +66,22 @@ public class MainFragment extends Fragment {
         mainBoardSi = view.findViewById(R.id.main_board_si);
 
         LocationHelper locationHelper = LocationHelper.getInstance();
-        locationHelper.setContext(getContext());
+        locationHelper.setContext(requireContext());
 
         /*
          * 사용자의 위치 권한이 수락되었다는 것을 전제로 하지만
          * 혹시 몰라 한 번 더 체크합니다.
          * */
         if(locationHelper.isLocationPermissionGranted()) {
-            location = locationHelper.getLocation();
-
             Log.d(TAG, "onCreate: Location permission is granted");
-
+            location = locationHelper.getLocation();
             if(location != null){
                 setLocationOnMainBoard();
             }else{
-                Toast.makeText(requireContext(), "location not provided", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), "위치 정보를 읽어올 수 없습니다.", Toast.LENGTH_SHORT).show();
             }
+        }else{
+            Toast.makeText(requireContext(), "위치 권한을 활성화 한 후 사용해주세요.", Toast.LENGTH_SHORT).show();
         }
 
         /* 귀가 정보 작성 페이지로 넘어갑니다.
@@ -113,7 +113,6 @@ public class MainFragment extends Fragment {
      *  ???시 로 디스플레이 됩니다.
      * */
     private void setLocationOnMainBoard(){
-
         Call<Address> call = RetrofitBuilder.getInstance().locationApiService.getAddressFromGps(
                 Double.toString(location.getLongitude()),
                 Double.toString(location.getLatitude()),
