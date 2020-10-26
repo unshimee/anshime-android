@@ -59,7 +59,6 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemViewType(int position) {
-        // TODO: 10/23/2020 사용자의 UID 와 비교하도록 변경하기
         if(TextUtils.equals(chatMessages.get(position).getUserName(),
                 userName)){
             return VIEW_TYPE_ME;
