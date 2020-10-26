@@ -27,12 +27,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.wtm.anshime.R;
 import com.wtm.anshime.model.ChatMessage;
+import com.wtm.anshime.storage.AppPreference;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 import static com.wtm.anshime.utils.Constants.MESSAGES;
+import static com.wtm.anshime.utils.Constants.USER_NAME_KEY;
 
 public class ChatMainFragment extends Fragment {
 
@@ -47,6 +49,7 @@ public class ChatMainFragment extends Fragment {
     private String guInfo = "unknown"; //무슨 구에 속해있는지
     private String dongInfo = "unknown"; //무슨 동에 속해있는지
     private String databasePath = "";
+    private String userName;
 
     private ChatMessageAdapter chatMessageAdapter;
     private RecyclerView chatList;
@@ -83,6 +86,17 @@ public class ChatMainFragment extends Fragment {
 
         initPlaceInfo("서울특별시", "용산구", "동자동");
 
+        try {
+            userName = AppPreference.getInstance().readFromPrefs(USER_NAME_KEY);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            //만약 유저 정보를 읽어올 수 없다면 익명으로 초기화
+            if(userName == null){
+                userName = "익명" + ((int) (Math.random()) * 100 + 1);
+            }
+        }
+
         inputChatMsg = view.findViewById(R.id.chat_msg_input);
         btnSendChat = view.findViewById(R.id.btn_send_chat);
         chatList = view.findViewById(R.id.chat_list);
@@ -106,8 +120,7 @@ public class ChatMainFragment extends Fragment {
             Calendar calendar = Calendar.getInstance();
             Date date = calendar.getTime();
 
-            // TODO: 10/26/2020 Get user info from database
-            ChatMessage chatMessage = new ChatMessage("user" + ((int) (Math.random() * 100) + 1), chatMsg, date.toString());
+            ChatMessage chatMessage = new ChatMessage(userName, chatMsg, date.toString());
 
             DatabaseReference reference = database.getReference(databasePath);
             reference.push().setValue(
@@ -117,7 +130,7 @@ public class ChatMainFragment extends Fragment {
             inputChatMsg.setText("");
         });
 
-        chatMessageAdapter = new ChatMessageAdapter(chatMessages);
+        chatMessageAdapter = new ChatMessageAdapter(chatMessages, userName);
 
         reference = database.getReference(databasePath);
 
