@@ -2,6 +2,7 @@ package com.wtm.anshime.ui.main.chat;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,9 +33,14 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         final ChatDiffUtilCallback diffUtilCallback = new ChatDiffUtilCallback(this.chatMessages, chatMessages);
         final DiffUtil.DiffResult result = DiffUtil.calculateDiff(diffUtilCallback);
 
-        this.chatMessages.clear();
-        this.chatMessages.addAll(chatMessages);
+        this.chatMessages = chatMessages;
+        this.notifyDataSetChanged();
         result.dispatchUpdatesTo(this);
+    }
+
+    public void addChatMessage(ChatMessage chatMessage){
+        this.chatMessages.add(chatMessage);
+        this.notifyDataSetChanged();
     }
 
     private void configureMyChatViewHolder(final MyChatMessageViewHolder myChatMessageViewHolder,
@@ -132,5 +138,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             timeStamp = itemView.findViewById(R.id.other_chat_timestamp);
         }
     }
+
+    private static final String TAG = "ChatMessageAdapter";
 }
 
