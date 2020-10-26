@@ -11,4 +11,12 @@ public class Constants {
     public final static String JSON = "json";
 
     public final static String MESSAGES = "messages";
+
+    public final static String BASE_URL = "http://52.78.32.55/";
+    public final static String APP_PREF = "APP_PREF";
+    public final static String PREF_INIT_ERROR = "preference object not initialized";
+
+    public static final String  ACCESS_TOKEN_KEY = "access_token_key";
+    public static final String  REFRESH_TOKEN_KEY = "refresh_token_key";
+    public static final String USER_NAME_KEY = "user_name_key";
 }

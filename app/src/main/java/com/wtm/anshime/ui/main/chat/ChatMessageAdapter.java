@@ -22,11 +22,14 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private static final int VIEW_TYPE_ME = 1000;
     private static final int VIEW_TYPE_OTHER = 2000;
     private List<ChatMessage> chatMessages;
+    private String userName;
 
     public ChatMessageAdapter(
-            List<ChatMessage> chatMessages
+            List<ChatMessage> chatMessages,
+            String userName
     ){
         this.chatMessages = chatMessages;
+        this.userName = userName;
     }
 
     public void updateChatMessages(List<ChatMessage> chatMessages){
@@ -56,9 +59,8 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemViewType(int position) {
-        // TODO: 10/23/2020 사용자의 UID 와 비교하도록 변경하기
         if(TextUtils.equals(chatMessages.get(position).getUserName(),
-                "sample user")){
+                userName)){
             return VIEW_TYPE_ME;
         }else{
             return VIEW_TYPE_OTHER;
@@ -86,7 +88,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if(TextUtils.equals(chatMessages.get(position).getUserName(),
-                "sample user")){
+                userName)){
             configureMyChatViewHolder((MyChatMessageViewHolder) holder, position);
         }else{
             configureOtherChatViewHolder((OtherChatMessageViewHolder) holder, position);

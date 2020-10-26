@@ -15,16 +15,30 @@ import com.kakao.sdk.user.UserApiClient;
 import com.kakao.sdk.user.model.Account;
 import com.kakao.sdk.user.model.Gender;
 import com.wtm.anshime.R;
+import com.wtm.anshime.api.RetrofitBuilder;
+import com.wtm.anshime.model.AuthBody;
+import com.wtm.anshime.model.AuthResponse;
+import com.wtm.anshime.storage.AppPreference;
 import com.wtm.anshime.ui.main.MainActivity;
 import com.wtm.anshime.utils.LocationHelper;
 
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.wtm.anshime.utils.Constants.ACCESS_TOKEN_KEY;
 import static com.wtm.anshime.utils.Constants.FEMALE;
+import static com.wtm.anshime.utils.Constants.REFRESH_TOKEN_KEY;
+import static com.wtm.anshime.utils.Constants.USER_NAME_KEY;
 
 public class AuthActivity extends BaseActivity{
 
     private static final String TAG = "AuthActivity";
+
+    private RetrofitBuilder retrofitBuilder = RetrofitBuilder.getInstance();
+    private AppPreference appPreference;
 
     private ProgressBar progressBar;
 
@@ -35,9 +49,19 @@ public class AuthActivity extends BaseActivity{
 
         Button kakaoLoginBtn = findViewById(R.id.btn_kakao_login);
         progressBar = findViewById(R.id.progress_bar);
+        appPreference = AppPreference.getInstance();
+        appPreference.setContext(getApplicationContext());
 
         askLocationPermission();
         askStoragePermission();
+
+
+        try {
+            String authToken = appPreference.readFromPrefs(ACCESS_TOKEN_KEY);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         kakaoLoginBtn.setOnClickListener(v -> {
             if(!isNetworkConnected()){
@@ -107,6 +131,49 @@ public class AuthActivity extends BaseActivity{
         });
     }
 
+    private void signIn(AuthBody authBody, Account account){
+        Call<AuthResponse> authResponseCall = retrofitBuilder.authApiService.signInKakao(authBody);
+        Callback<AuthResponse> authResponseCallback
+                = new Callback<AuthResponse>() {
+            @Override
+            public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
+
+                if(response.body() != null){
+                    Log.d(TAG, "onResponse: " + response.body());
+                    if(response.body().getErrors().isEmpty()
+                            && !response.body().getAccessToken().isEmpty()
+                            && !response.body().getRefreshToken().isEmpty()){
+
+                        String accessToken = response.body().getAccessToken();
+                        String refreshToken = response.body().getRefreshToken();
+
+                        Log.d(TAG, "onResponse: " + accessToken + "\n\n" + refreshToken);
+
+                        try {
+                            appPreference.writeToPrefs(USER_NAME_KEY, account.getProfile().getNickname());
+                            appPreference.writeToPrefs(ACCESS_TOKEN_KEY, accessToken);
+                            appPreference.writeToPrefs(REFRESH_TOKEN_KEY, refreshToken);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        navigateToMainActivity();
+                    }else{
+                        Log.e(TAG, "onResponse: " + response.body().getErrors());
+                        Toast.makeText(AuthActivity.this, "error", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Log.d(TAG, "onResponse: body is null " + response);
+                }
+            }
+            @Override
+            public void onFailure(Call<AuthResponse> call, Throwable t) {
+                Toast.makeText(AuthActivity.this, "로그인 실패\n" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "onFailure: " + t.getMessage());
+            }
+        };
+        authResponseCall.enqueue(authResponseCallback);
+    }
+
     private void getUserInfo(){
         UserApiClient.getInstance().me((user, error) -> {
             if(error != null){
@@ -119,8 +186,18 @@ public class AuthActivity extends BaseActivity{
                     boolean isEmailValid = validateEmail(account);
                     boolean isNameValid = validateName(account);
 
-                    if(isGenderValid && isEmailValid && isNameValid && userId <= 0.0){
-                        // TODO: 10/26/2020 authentication with server
+                    Log.d(TAG, "getUserInfo: " + account.getEmail() + ", " + userId);
+                    Log.d(TAG, "getUserInfo: " + isEmailValid + ", " + isGenderValid + ", " + isNameValid);
+
+                    if(isGenderValid && isEmailValid && isNameValid && userId > 0.0){
+
+                        AuthBody authBody = new AuthBody(
+                                account.getEmail(),
+                                account.getGender().toString().toLowerCase(),
+                                Long.toString(userId),
+                                account.getProfile().getNickname()
+                        );
+                        signIn(authBody, account);
                     }
                 }
             }
@@ -162,6 +239,7 @@ public class AuthActivity extends BaseActivity{
     }
 
     private void navigateToMainActivity(){
+        Toast.makeText(AuthActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
@@ -176,10 +254,3 @@ public class AuthActivity extends BaseActivity{
         }
     }
 }
-
-
-//OAuthToken(accessToken=_bllIbchIfY3hO5987i_4C6NIQtXSYQ1krqEWgo9dRoAAAF1RX4oXg,
-// accessTokenExpiresAt=Wed Oct 21 07:11:35 GMT+09:00 2020,
-// refreshToken=_iGGHs835_XMFCh_8tD50DdDHKv7zhNnZB7Kfwo9dRoAAAF1RX4oXQ,
-// refreshTokenExpiresAt=Sat Dec 19 19:11:35 GMT+09:00 2020,
-// scopes=[account_email, gender, profile])

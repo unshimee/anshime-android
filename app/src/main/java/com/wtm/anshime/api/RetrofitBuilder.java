@@ -2,6 +2,8 @@ package com.wtm.anshime.api;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static com.wtm.anshime.utils.Constants.BASE_URL;
 import static com.wtm.anshime.utils.Constants.LOCATIONS_API_BASE_URL;
 
 public class RetrofitBuilder {
@@ -19,5 +21,13 @@ public class RetrofitBuilder {
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
+
+    private Retrofit baseRetrofit = new Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
+
     public LocationApiService locationApiService = retrofit.create(LocationApiService.class);
+
+    public AuthApiService authApiService = baseRetrofit.create(AuthApiService.class);
 }

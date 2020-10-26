@@ -1,80 +1,37 @@
 package com.wtm.anshime.model;
 
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-//{
-//  "kakao_id": "string",
-//  "email": "string",
-//  "username": "string",
-//  "gender": "string"
-//}
 public class User implements Parcelable {
 
-    private int id;
-
-    @SerializedName("gender")
+    private String userId;
     private String gender;
-
-    @SerializedName("email")
     private String email;
-
     @SerializedName("username")
-    private String username;
-
-    @SerializedName("kakao_id")
-    private String kakaoId;
-
-    private String createdAt;
-
-    public User(){ }
-
-    public User(int id, String gender, String username, String kakaoId, String createdAt) {
-        this.id = id;
-        this.gender = gender;
-        this.username = username;
-        this.kakaoId = kakaoId;
-        this.createdAt = createdAt;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getKakaoId() {
-        return kakaoId;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
+    private String userName;
+    private String authToken;
+    private String refreshToken;
 
     protected User(Parcel in) {
-        id = in.readInt();
+        userId = in.readString();
         gender = in.readString();
-        username = in.readString();
-        kakaoId = in.readString();
-        createdAt = in.readString();
+        email = in.readString();
+        userName = in.readString();
+        authToken = in.readString();
+        refreshToken = in.readString();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
+        dest.writeString(userId);
         dest.writeString(gender);
-        dest.writeString(username);
-        dest.writeString(kakaoId);
-        dest.writeString(createdAt);
+        dest.writeString(email);
+        dest.writeString(userName);
+        dest.writeString(authToken);
+        dest.writeString(refreshToken);
     }
 
     @Override
