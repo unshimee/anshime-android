@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -80,7 +81,7 @@ public class ChatMainFragment extends Fragment {
         //메시지 작성하기 -> 전송버튼 클릭 -> Firebase 데이터베이스에 메시지 저장 (유저네임, 시간, 메시지 내용 보내야 함.)
         //메시지 불러오기 -> 리스트에 디스플레이
 
-        initPlaceInfo("서울특별시", "용산구", "후암동");
+        initPlaceInfo("서울특별시", "용산구", "동자동");
 
         inputChatMsg = view.findViewById(R.id.chat_msg_input);
         btnSendChat = view.findViewById(R.id.btn_send_chat);
@@ -106,7 +107,7 @@ public class ChatMainFragment extends Fragment {
             Date date = calendar.getTime();
 
             // TODO: 10/26/2020 Get user info from database
-            ChatMessage chatMessage = new ChatMessage("other user1", chatMsg, date.toString());
+            ChatMessage chatMessage = new ChatMessage("user" + ((int) (Math.random() * 100) + 1), chatMsg, date.toString());
 
             DatabaseReference reference = database.getReference(databasePath);
             reference.push().setValue(

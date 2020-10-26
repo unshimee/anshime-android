@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@drawable/round_corner_rect"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/round_corner_rect_light_blue"
     android:padding="6dp"
     android:layout_margin="8dp"
     android:orientation="vertical"
@@ -12,8 +12,8 @@
 
     <TextView
         android:id="@+id/chat_content"
-        android:text="Content : "
-        style="@style/Title3"
+        tools:text="Content : "
+        style="@style/Body1"
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
@@ -21,7 +21,7 @@
 
     <TextView
         android:id="@+id/chat_sender_id"
-        android:text="Sender : "
+        tools:text="Sender : "
         style="@style/Body2"
         android:textColor="@color/lightGrey"
         android:layout_width="wrap_content"
@@ -31,7 +31,7 @@
 
     <TextView
         android:id="@+id/chat_timestamp"
-        android:text="Time : "
+        tools:text="Time : "
         style="@style/Body2"
         android:textColor="@color/lightGrey"
         android:layout_width="wrap_content"
