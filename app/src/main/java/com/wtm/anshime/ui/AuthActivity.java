@@ -3,6 +3,7 @@ package com.wtm.anshime.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -42,18 +43,15 @@ public class AuthActivity extends BaseActivity{
             if(!isNetworkConnected()){
                 Toast.makeText(this, R.string.check_network_connection, Toast.LENGTH_LONG).show();
             }else {
-
-                //카카오톡은 없지만 카카오 계정은 있는 경우
-                navigateToMainActivity();
-
-                // TODO: 10/23/2020 Fix this later
-//                // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
+                // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
 //                if (LoginClient.getInstance().isKakaoTalkLoginAvailable(getApplicationContext())) {
 //                    //카카오톡이 있는 경우
 //                    setUpKakaoTalkLogin();
 //                } else {
-//                    //카카오톡은 없지만 카카오 계정은 있는 경우
-//                    setUpKakaoAccountLogin();
+
+                // TODO: 10/26/2020 카카오 앱으로 로그인 할 때 sdk 버그 발생.
+                    //카카오톡은 없지만 카카오 계정은 있는 경우
+                    setUpKakaoAccountLogin();
 //                }
             }
         });
@@ -114,38 +112,52 @@ public class AuthActivity extends BaseActivity{
             if(error != null){
                 Log.e(TAG, "getUserInfo: " + error.getMessage());
             }else if(user != null){
-                Log.i(TAG, "getUserInfo: " + user.getId() + " / "
-                        + user.getKakaoAccount().getEmail() + " / "
-                        + user.getKakaoAccount().getProfile().getNickname() + " / "
-                        + user.getKakaoAccount().getGender()
-                );
-
+                long userId = user.getId();
                 if(user.getKakaoAccount() != null){
                     Account account = user.getKakaoAccount();
-                    validateGender(account);
+                    boolean isGenderValid = validateGender(account);
+                    boolean isEmailValid = validateEmail(account);
+                    boolean isNameValid = validateName(account);
 
-                    // TODO: 10/20/2020 Add validation checks for emails & nickname too.
+                    if(isGenderValid && isEmailValid && isNameValid && userId <= 0.0){
+                        // TODO: 10/26/2020 authentication with server
+                    }
                 }
             }
-            //getUserInfo: 1508526144 / sarahan774@kakao.com / 한가희 / FEMALE
             return null;
         });
     }
 
-    private void validateGender(Account account) {
+    private boolean validateName(Account account) {
+        if(account.getProfile() != null){
+            return account.getProfile().getNickname() != null;
+        }else{
+            return false;
+        }
+    }
+
+    private boolean validateEmail(Account account) {
+        if(account.getEmail() != null){
+            String email = account.getEmail();
+            return Patterns.EMAIL_ADDRESS.matcher(email).matches();
+        }else{
+            return false;
+        }
+    }
+
+    private boolean validateGender(Account account) {
         if(account.getGender() != null){
             Gender gender = account.getGender();
             if(!gender.toString().equals(FEMALE)){
                 Toast.makeText(this,
                         R.string.if_not_female_msg,
                         Toast.LENGTH_SHORT).show();
+                return false;
             }else{
-                // TODO: 10/20/2020 Send user information to server
-
-                // TODO: 10/20/2020 Save account information to local database
-
-                navigateToMainActivity();
+                return true;
             }
+        }else{
+            return false;
         }
     }
 
