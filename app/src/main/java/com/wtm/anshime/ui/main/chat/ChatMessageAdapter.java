@@ -68,6 +68,15 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         otherChatMessageViewHolder.content.setText(msg.getContent());
         otherChatMessageViewHolder.timeStamp.setText(msg.getTimeStamp());
         otherChatMessageViewHolder.userName.setText(msg.getUserName());
+
+        // If the bound view wasn't previously displayed on screen, it's animated
+        if (position > lastPosition) {
+            Animation animation = AnimationUtils.loadAnimation(
+                    otherChatMessageViewHolder.itemView.getContext(),
+                    R.anim.slide_in_right);
+            otherChatMessageViewHolder.itemView.startAnimation(animation);
+            lastPosition = position;
+        }
     }
 
     @Override
