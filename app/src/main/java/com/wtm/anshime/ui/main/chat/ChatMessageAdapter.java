@@ -38,11 +38,6 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         result.dispatchUpdatesTo(this);
     }
 
-    public void addChatMessage(ChatMessage chatMessage){
-        this.chatMessages.add(chatMessage);
-        this.notifyDataSetChanged();
-    }
-
     private void configureMyChatViewHolder(final MyChatMessageViewHolder myChatMessageViewHolder,
                                            int position){
         ChatMessage msg = chatMessages.get(position);

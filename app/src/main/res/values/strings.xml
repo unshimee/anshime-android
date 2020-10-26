@@ -27,4 +27,5 @@
     <string name="choose_transport_method_hint">이동수단 선택</string>
     <string name="start_icon_desc_transport_method">transport method</string>
     <string name="check_info_title">작성정보 확인</string>
+    <string name="send">전송</string>
 </resources>

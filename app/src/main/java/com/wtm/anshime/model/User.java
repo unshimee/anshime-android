@@ -4,12 +4,30 @@ package com.wtm.anshime.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
+//{
+//  "kakao_id": "string",
+//  "email": "string",
+//  "username": "string",
+//  "gender": "string"
+//}
 public class User implements Parcelable {
 
     private int id;
+
+    @SerializedName("gender")
     private String gender;
+
+    @SerializedName("email")
+    private String email;
+
+    @SerializedName("username")
     private String username;
+
+    @SerializedName("kakao_id")
     private String kakaoId;
+
     private String createdAt;
 
     public User(){ }

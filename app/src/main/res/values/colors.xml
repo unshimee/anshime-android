@@ -4,6 +4,9 @@
     <color name="colorPrimaryDark">#2B357A</color>
     <color name="colorAccent">#03DAC5</color>
 
+    <color name="colorSecondary">#B6D5E1</color>
+    <color name="colorSecondaryDark">#65799B</color>
+
     <color name="kakaoGold">#FFDC00</color>
     <color name="kakaoBlack">#2B291C</color>
 
