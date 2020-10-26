@@ -9,7 +9,7 @@
     <string name="arrived_list_text">**님이 %d분 전에 도착</string>
     <string name="location_permission_granted_msg">위치권한이 허가되었습니다 :)</string>
     <string name="location_permission_denied_msg">위치권한이 거부되었습니다 :(</string>
-    <string name="wrong_gps_value_msg">올바른 GPS값이 아닙니다.\n위치 정보를 읽어올 수 없습니다.</string>
+    <string name="wrong_gps_value_msg">올바른 GPS값이 아니거나 대한민국을 벗어난 위치입니다.\n위치 정보를 읽어올 수 없습니다.</string>
     <string name="si_placeholder">\???시</string>
     <string name="main_board_sub_title">여성 안전 귀가 현황</string>
     <string name="main_board_title_placeholder">서울특별시</string>

@@ -55,28 +55,14 @@ public class AuthActivity extends BaseActivity{
         askLocationPermission();
         askStoragePermission();
 
-
-        try {
-            String authToken = appPreference.readFromPrefs(ACCESS_TOKEN_KEY);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         kakaoLoginBtn.setOnClickListener(v -> {
             if(!isNetworkConnected()){
                 Toast.makeText(this, R.string.check_network_connection, Toast.LENGTH_LONG).show();
             }else {
-                // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
-//                if (LoginClient.getInstance().isKakaoTalkLoginAvailable(getApplicationContext())) {
-//                    //카카오톡이 있는 경우
-//                    setUpKakaoTalkLogin();
-//                } else {
-
                 // TODO: 10/26/2020 카카오 앱으로 로그인 할 때 sdk 버그 발생.
-                    //카카오톡은 없지만 카카오 계정은 있는 경우
-                    setUpKakaoAccountLogin();
-//                }
+                //우선은 카카오 앱 로그인 말고 카카오 계정만 서포트 합니다.
+                //카카오톡은 없지만 카카오 계정은 있는 경우
+                setUpKakaoAccountLogin();
             }
         });
     }
