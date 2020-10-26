@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import static com.wtm.anshime.utils.Constants.MESSAGES;
+
 public class ChatMainFragment extends Fragment {
 
     private EditText inputChatMsg;
@@ -38,6 +41,11 @@ public class ChatMainFragment extends Fragment {
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference reference;
+
+    private String siInfo = "unknown"; //무슨 시에 속해있는지
+    private String guInfo = "unknown"; //무슨 구에 속해있는지
+    private String dongInfo = "unknown"; //무슨 동에 속해있는지
+    private String databasePath = "";
 
     private ChatMessageAdapter chatMessageAdapter;
     private RecyclerView chatList;
@@ -72,13 +80,11 @@ public class ChatMainFragment extends Fragment {
         //메시지 작성하기 -> 전송버튼 클릭 -> Firebase 데이터베이스에 메시지 저장 (유저네임, 시간, 메시지 내용 보내야 함.)
         //메시지 불러오기 -> 리스트에 디스플레이
 
+        initPlaceInfo("서울특별시", "용산구", "후암동");
 
         inputChatMsg = view.findViewById(R.id.chat_msg_input);
         btnSendChat = view.findViewById(R.id.btn_send_chat);
         chatList = view.findViewById(R.id.chat_list);
-        linearLayoutManager = new LinearLayoutManager(requireContext());
-        linearLayoutManager.setStackFromEnd(true);
-        chatList.setLayoutManager(linearLayoutManager);
 
 
         inputChatMsg.addTextChangedListener(new TextWatcher() {
@@ -98,50 +104,61 @@ public class ChatMainFragment extends Fragment {
         btnSendChat.setOnClickListener(v -> {
             Calendar calendar = Calendar.getInstance();
             Date date = calendar.getTime();
-            // TODO: 10/23/2020 Change this dynamically
+
+            // TODO: 10/26/2020 Get user info from database
             ChatMessage chatMessage = new ChatMessage("other user1", chatMsg, date.toString());
-            DatabaseReference reference = database.getReference("서울특별시/용산구/후암동/messages");
+
+            DatabaseReference reference = database.getReference(databasePath);
             reference.push().setValue(
                 chatMessage
             );
+            //들어가 있는 텍스트를 비워줍니다.
+            inputChatMsg.setText("");
         });
 
-        reference = database.getReference();
+        chatMessageAdapter = new ChatMessageAdapter(chatMessages);
 
-        observeDatabase();
-    }
+        reference = database.getReference(databasePath);
 
-    private void observeDatabase() {
-
-        // TODO: 10/23/2020 change this dynamically
-        DatabaseReference reference = database.getReference("서울특별시/용산구/후암동/messages");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                long size = snapshot.getChildrenCount();
 
-                Log.d(TAG, "get children count : " + size);
-
+                Log.d(TAG, "onDataChange: " + "reading database ... ");
+                chatMessages.clear();
                 for (DataSnapshot child : snapshot.getChildren()) {
-                    if(chatMessages.contains(child.getValue())){
-                        continue;
+                    if(child.exists()) {
+                        ChatMessage chatMessage = child.getValue(ChatMessage.class);
+                        chatMessages.add(chatMessage);
                     }
-                    else{ chatMessages.add(child.getValue(ChatMessage.class));}
                 }
-                if(chatMessageAdapter == null){
-                    chatMessageAdapter = new ChatMessageAdapter(chatMessages);
-                }else{
-                    chatMessageAdapter.updateChatMessages(chatMessages);
-                    chatMessageAdapter.notifyDataSetChanged();
-                }
-                chatList.setAdapter(chatMessageAdapter);
+                chatMessageAdapter.updateChatMessages(chatMessages);
+                chatList.scrollToPosition(chatMessages.size() - 1);
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(requireContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), "failed to read values from database!", Toast.LENGTH_SHORT).show();
             }
         });
 
+        chatList.setAdapter(chatMessageAdapter);
+        linearLayoutManager = new LinearLayoutManager(requireContext());
+        linearLayoutManager.setStackFromEnd(true);
+        chatList.setLayoutManager(linearLayoutManager);
+    }
+
+    private void initPlaceInfo(String si, String gu, String dong) {
+        siInfo = si;
+        guInfo = gu;
+        dongInfo = dong;
+
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(siInfo).append("/")
+                .append(guInfo).append("/")
+                .append(dongInfo).append("/")
+                .append(MESSAGES);
+        databasePath = stringBuilder.toString();
     }
 
     private static final String TAG = "ChatMainFragment";
