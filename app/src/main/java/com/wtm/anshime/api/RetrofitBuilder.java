@@ -30,4 +30,6 @@ public class RetrofitBuilder {
     public LocationApiService locationApiService = retrofit.create(LocationApiService.class);
 
     public AuthApiService authApiService = baseRetrofit.create(AuthApiService.class);
+
+    public HomeApiService homeApiService = baseRetrofit.create(HomeApiService.class);
 }

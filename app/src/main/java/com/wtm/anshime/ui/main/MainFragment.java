@@ -1,8 +1,6 @@
 package com.wtm.anshime.ui.main;
 
-import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,22 +13,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.wtm.anshime.R;
-import com.wtm.anshime.api.RetrofitBuilder;
-import com.wtm.anshime.model.Address;
-import com.wtm.anshime.utils.LocationHelper;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-import static com.wtm.anshime.utils.Constants.JSON;
-import static com.wtm.anshime.utils.Constants.LOCATIONS_API_KEY;
-import static com.wtm.anshime.utils.Constants.LOCATIONS_DOMAIN;
 
 public class MainFragment extends Fragment {
 
@@ -41,9 +29,10 @@ public class MainFragment extends Fragment {
     private Animation fabOpen, fabClose, fabRotateClock, fabRotateAntiClock;
 
     private TextView mainBoardSi;
-    private Location location;
 
     private Button enterChatBtn;
+
+    private MainViewModel mainViewModel;
 
     boolean isOpen = false;
 
@@ -65,24 +54,8 @@ public class MainFragment extends Fragment {
         enterChatBtn = view.findViewById(R.id.btn_enter_group_chat);
         mainBoardSi = view.findViewById(R.id.main_board_si);
 
-        LocationHelper locationHelper = LocationHelper.getInstance();
-        locationHelper.setContext(requireContext());
-
-        /*
-         * 사용자의 위치 권한이 수락되었다는 것을 전제로 하지만
-         * 혹시 몰라 한 번 더 체크합니다.
-         * */
-        if(locationHelper.isLocationPermissionGranted()) {
-            Log.d(TAG, "onCreate: Location permission is granted");
-            location = locationHelper.getLocation();
-            if(location != null){
-                setLocationOnMainBoard();
-            }else{
-                Toast.makeText(requireContext(), "위치 정보를 읽어올 수 없습니다.", Toast.LENGTH_SHORT).show();
-            }
-        }else{
-            Toast.makeText(requireContext(), "위치 권한을 활성화 한 후 사용해주세요.", Toast.LENGTH_SHORT).show();
-        }
+        //Main Activity 에서 초기화된 뷰모델을 공유하는 객체
+        mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
 
         /* 귀가 정보 작성 페이지로 넘어갑니다.
          * */
@@ -103,47 +76,22 @@ public class MainFragment extends Fragment {
         enterChatBtn.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(R.id.action_main_to_chat);
         });
-    }
 
-    // 참고) 만약 repository 패턴을 이용한다면 네트워킹 코드는 repository 클래스로 이동해야 합니다 .
-    /* GPS 값을 도로명주소로 변환하는 API를 호출하고
-     *  만약 올바른 GPS 값을 받아서 도로명주소로 제대로 반환이 된 경우
-     *  무슨 시에 있는지 표시해줍니다.
-     *  만약 GPS 값이 잘못되어서 서버에서 도로명주소를 읽어오지 못한 경우
-     *  ???시 로 디스플레이 됩니다.
-     * */
-    private void setLocationOnMainBoard(){
-        Call<Address> call = RetrofitBuilder.getInstance().locationApiService.getAddressFromGps(
-                Double.toString(location.getLongitude()),
-                Double.toString(location.getLatitude()),
-                JSON,
-                LOCATIONS_API_KEY,
-                LOCATIONS_DOMAIN
-        );
 
-        Callback<Address> callback = new Callback<Address>() {
-            @Override
-            public void onResponse(Call<Address> call, Response<Address> response) {
-                if (response.body() != null && response.body().getStreetAddress() != null) {
-                    String address = response.body().getStreetAddress();
-                    String si = address.split(" ")[0];
-                    Log.d(TAG, "onResponse: " + si);
-                    mainBoardSi.setText(si);
-
+        /*
+         * Main Activity 에서 서버에서 불러온 위치 정보를 뷰모델에 셋팅한 후
+         * 현황판에 시 정보를 반영합니다.
+         * 만약 값이 없다면 ???시 로 셋팅합니다.
+         * */
+        mainViewModel.getCoordinateResponseLiveData().observe(requireActivity(), coordinateResponse -> {
+            if(coordinateResponse.getErrors() == null){
+                if(coordinateResponse.getDepth1() != null){
+                   mainBoardSi.setText(coordinateResponse.getDepth1());
                 }else{
-                    //emulator 에서 올바른 gps 값을 읽어오지 못할 경우
-                    //일단은 ???로 디스플레이 하도록 합니다.
-                    mainBoardSi.setText(R.string.si_placeholder);
-                    Toast.makeText(getContext(), R.string.wrong_gps_value_msg, Toast.LENGTH_SHORT).show();
+                    mainBoardSi.setText(R.string.unkown_location);
                 }
             }
-
-            @Override
-            public void onFailure(Call<Address> call, Throwable t) {
-                Log.e(TAG, "onFailure: " + t.getMessage());
-            }
-        };
-        call.enqueue(callback);
+        });
     }
 
     /*

@@ -28,4 +28,8 @@
     <string name="start_icon_desc_transport_method">transport method</string>
     <string name="check_info_title">작성정보 확인</string>
     <string name="send">전송</string>
+    <string name="user_location_not_found">사용자의 위치 정보를 불러올 수 없습니다.</string>
+    <string name="location_server_error">서버에서 위치 정보를 불러올 수 없음.</string>
+    <string name="avtivate_location_service">위치 권한을 활성화 한 후 사용해주세요.</string>
+    <string name="unkown_location">\???시</string>
 </resources>
